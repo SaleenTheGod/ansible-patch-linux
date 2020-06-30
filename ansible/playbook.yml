@@ -1,0 +1,52 @@
+---
+# This playbook patches dirty cow
+
+- hosts: all
+  gather_facts: true
+  tasks:
+    - name: Grouping!
+      group_by:
+        key: "{{ ansible_os_family }}"
+
+- hosts: Debian
+  gather_facts: false
+  serial: 1
+  become: yes
+  max_fail_percentage: 0
+  tasks:
+    - name: Upgrade all packages to the latest version
+      apt:
+        name: "*"
+        state: latest
+    
+    - name: Update all packages to the latest version
+      apt:
+        upgrade: dist
+
+    - name: Create breadcrumb
+      file:
+        path: "/tmp/patching-crumb-{{ansible_date_time.date}}"
+        mode: '0644'
+        state: touch
+        owner: root
+        group: root
+
+
+- hosts: RedHat
+  gather_facts: false
+  serial: 1
+  become: yes
+  max_fail_percentage: 0
+  tasks:
+    - name: Upgrade all packages to the latest version
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Create breadcrumb
+      file:
+        path: "/tmp/patching-crumb-{{ansible_date_time.date}}"
+        mode: '0644'
+        state: touch
+        owner: root
+        group: root

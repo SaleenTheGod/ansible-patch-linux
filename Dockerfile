@@ -9,6 +9,7 @@ RUN pip3 install ansible
 
 # Copy your ansible configuration into the image
 COPY /ansible /ansible
+COPY /privatekey/*.pem /ansible/privatekey/privatekey.pem
 WORKDIR /ansible
 
 # Run ansible to configure things

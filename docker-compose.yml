@@ -4,5 +4,6 @@ services:
     image: jjambrose1s/ansiblelinuxpatch:latest
     environment: 
       - SSH_USER=USERNAME_HERE
-      - SSH_PASS=PASSWORD_HERE
       - SSH_HOST=HOST_HERE
+    volumes: 
+      - ./path/to/privatekey.pem:/ansible/privatekey.pem

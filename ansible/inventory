@@ -1,7 +1,6 @@
 [all:vars]
 ansible_connection=ssh
 ansible_user=__SSH_USER
-ansible_ssh_pass=__SSH_PASS
 
 [all]
 __SSH_HOST

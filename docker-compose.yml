@@ -5,5 +5,3 @@ services:
     environment: 
       - SSH_USER=USERNAME_HERE
       - SSH_HOST=HOST_HERE
-    volumes: 
-      - ./path/to/privatekey.pem:/ansible/privatekey.pem

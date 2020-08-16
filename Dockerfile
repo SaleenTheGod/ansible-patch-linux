@@ -11,5 +11,7 @@ RUN pip3 install ansible
 COPY /ansible /ansible
 WORKDIR /ansible
 
+RUN sed -i -e 's/\r$//' /ansible/entrypoint.sh
+
 # Run ansible to configure things
 CMD ["/bin/bash", "/ansible/entrypoint.sh"]

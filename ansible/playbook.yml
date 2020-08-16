@@ -17,10 +17,16 @@
       apt:
         name: "*"
         state: latest
+      register: aptout
     
     - name: Update all packages to the latest version
       apt:
         upgrade: dist
+      register: aptupgradeout
+
+        # show the content of aptout var
+    - debug: var=aptout
+    - debug: var=aptupgradeout
 
     - name: Create breadcrumb
       file:
@@ -29,6 +35,14 @@
         state: touch
         owner: root
         group: root
+
+    #- name: Output 
+    #  shell: "echo {{ aptout }} >> /tmp/patching-crumb-{{ansible_date_time.date}}"
+
+    - name: Copy output of apt update to /tmp/patching-crumb-{{ansible_date_time.date}}
+      copy:
+        dest: "/tmp/patching-crumb-{{ansible_date_time.date}}"
+        content: "{{ aptout.stdout_lines }}"
 
 
 - hosts: RedHat
@@ -41,6 +55,7 @@
       yum:
         name: "*"
         state: latest
+      register: yumoutput
 
     - name: Create breadcrumb
       file:
@@ -49,3 +64,8 @@
         state: touch
         owner: root
         group: root
+    
+    - name: Copy output of yum update to /tmp/patching-crumb-{{ansible_date_time.date}}
+      copy:
+        dest: "/tmp/patching-crumb-{{ansible_date_time.date}}"
+        content: "{{ aptout }}"
